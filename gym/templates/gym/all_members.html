@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Members</title>
+</head>
+<body>
+    <h1>List of All Members</h1>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Membership Type</th>
+            <th>Join Date</th>
+        </tr>
+        {% for member in members %}
+        <tr>
+            <td>{{ member.name }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.phone }}</td>
+            <td>{{ member.membership_type }}</td>
+            <td>{{ member.join_date }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No members found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

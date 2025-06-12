@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
+from .models import Member
 
+from .forms import MemberForm
 @login_required
 def dashboard_view(request):
     return render(request, 'gym/dashboard.html')
@@ -50,4 +52,35 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-    
+def add_member_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        gender = request.POST.get('gender')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        membership_type = request.POST.get('membership_type')
+
+        # Save to database
+        Member.objects.create(
+            name=name,
+            age=age,
+            gender=gender,
+            phone=phone,
+            email=email,
+            address=address,
+            membership_type=membership_type
+        )
+
+        messages.success(request, 'Member added successfully!')
+        return redirect('add_member')
+
+    return render(request, 'gym/add_member.html')
+def view_members(request):
+    members = Member.objects.all()
+    return render(request, 'gym/view_members.html', {'members': members})
+
+def all_members_view(request):
+    members = Member.objects.all()
+    return render(request, 'gym/all_members.html', {'members': members})
