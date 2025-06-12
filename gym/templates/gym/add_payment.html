@@ -1,0 +1,15 @@
+<!-- gym/templates/gym/add_payment.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Payment</title>
+</head>
+<body>
+    <h1>Add Payment Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

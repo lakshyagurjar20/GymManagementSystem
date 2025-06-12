@@ -5,8 +5,27 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from .models import Member
+from django.shortcuts import get_object_or_404
 
 from .forms import MemberForm
+
+from .forms import PaymentForm
+from .models import Payment
+
+def add_payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('all_payments')
+    else:
+        form = PaymentForm()
+    return render(request, 'gym/add_payment.html', {'form': form})
+
+def all_payments(request):
+    payments = Payment.objects.all().order_by('-payment_date')
+    return render(request, 'gym/all_payments.html', {'payments': payments})
+
 @login_required
 def dashboard_view(request):
     return render(request, 'gym/dashboard.html')
@@ -84,3 +103,33 @@ def view_members(request):
 def all_members_view(request):
     members = Member.objects.all()
     return render(request, 'gym/all_members.html', {'members': members})
+def member_detail_view(request, member_id):
+    member = get_object_or_404(Member, id=member_id)
+    return render(request, 'gym/member_detail.html', {'member': member})
+
+
+def edit_member_view(request, member_id):
+    member = get_object_or_404(Member, id=member_id)
+    if request.method == 'POST':
+        member.name = request.POST.get('name')
+        member.age = request.POST.get('age')
+        member.gender = request.POST.get('gender')
+        member.phone = request.POST.get('phone')
+        member.email = request.POST.get('email')
+        member.address = request.POST.get('address')
+        member.membership_type = request.POST.get('membership_type')
+        member.save()
+
+        messages.success(request, 'Member updated successfully!')
+        return redirect('all_members')
+
+    return render(request, 'gym/edit_member.html', {'member': member})
+
+
+def delete_member_view(request, member_id):
+    member = get_object_or_404(Member, id=member_id)
+    if request.method == 'POST':
+        member.delete()
+        messages.success(request, 'Member deleted successfully!')
+        return redirect('all_members')
+    return render(request, 'gym/delete_member.html', {'member': member})

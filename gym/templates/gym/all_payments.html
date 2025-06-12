@@ -1,0 +1,18 @@
+<h2>All Payments</h2>
+<table border="1">
+    <tr>
+        <th>Member</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Note</th>
+    </tr>
+    {% for payment in payments %}
+    <tr>
+        <td>{{ payment.member.name }}</td>
+        <td>₹{{ payment.amount }}</td>
+        <td>{{ payment.payment_date }}</td>
+        <td>{{ payment.note }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'add_payment' %}">Add Payment</a>

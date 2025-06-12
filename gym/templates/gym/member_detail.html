@@ -1,0 +1,13 @@
+<h2>Member Details</h2>
+<p><strong>Name:</strong> {{ member.name }}</p>
+<p><strong>Age:</strong> {{ member.age }}</p>
+<p><strong>Gender:</strong> {{ member.gender }}</p>
+<p><strong>Phone:</strong> {{ member.phone }}</p>
+<p><strong>Email:</strong> {{ member.email }}</p>
+<p><strong>Address:</strong> {{ member.address }}</p>
+<p><strong>Membership:</strong> {{ member.membership_type }}</p>
+<p><strong>Join Date:</strong> {{ member.join_date }}</p>
+
+<a href="{% url 'edit_member' member.id %}">Edit</a> |
+<a href="{% url 'delete_member' member.id %}">Delete</a> |
+<a href="{% url 'all_members' %}">Back to All Members</a>
