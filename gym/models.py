@@ -37,3 +37,20 @@ class Trainer(models.Model):
 
     def __str__(self):
         return self.name
+class Equipment(models.Model):
+    name = models.CharField(max_length=100)
+    quantity = models.IntegerField()
+    price = models.FloatField()
+    purchase_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+    
+class Plan(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    duration = models.CharField(max_length=50)  # e.g., '1 Month', '3 Months'
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name

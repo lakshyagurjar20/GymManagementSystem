@@ -13,6 +13,9 @@ from .forms import PaymentForm
 from .models import Payment
 from .models import Trainer
 from .forms import TrainerForm
+from .models import Equipment
+from .forms import EquipmentForm
+from .models import Plan
 def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -183,3 +186,72 @@ def delete_trainer(request, trainer_id):
         trainer.delete()
         return redirect('all_trainers')
     return render(request, 'gym/delete_trainer.html', {'trainer': trainer})
+
+
+# List all equipment
+def all_equipment(request):
+    equipments = Equipment.objects.all()
+    return render(request, 'gym/all_equipment.html', {'equipments': equipments})
+
+# Add new equipment
+def add_equipment(request):
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('all_equipment')
+    else:
+        form = EquipmentForm()
+    return render(request, 'gym/add_equipment.html', {'form': form})
+
+# Edit equipment
+def edit_equipment(request, eid):
+    equipment = Equipment.objects.get(id=eid)
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST, instance=equipment)
+        if form.is_valid():
+            form.save()
+            return redirect('all_equipment')
+    else:
+        form = EquipmentForm(instance=equipment)
+    return render(request, 'gym/edit_equipment.html', {'form': form})
+
+# Delete equipment
+def delete_equipment(request, eid):
+    equipment = Equipment.objects.get(id=eid)
+    if request.method == 'POST':
+        equipment.delete()
+        return redirect('all_equipment')
+    return render(request, 'gym/delete_equipment.html', {'equipment': equipment})
+def all_plans(request):
+    plans = Plan.objects.all()
+    return render(request, 'gym/all_plans.html', {'plans': plans})
+
+# Add new plan
+def add_plan(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        duration = request.POST.get('duration')
+        description = request.POST.get('description')
+        Plan.objects.create(name=name, price=price, duration=duration, description=description)
+        return redirect('all_plans')
+    return render(request, 'gym/add_plan.html')
+
+# Edit plan
+def edit_plan(request, plan_id):
+    plan = get_object_or_404(Plan, id=plan_id)
+    if request.method == 'POST':
+        plan.name = request.POST.get('name')
+        plan.price = request.POST.get('price')
+        plan.duration = request.POST.get('duration')
+        plan.description = request.POST.get('description')
+        plan.save()
+        return redirect('all_plans')
+    return render(request, 'gym/edit_plan.html', {'plan': plan})
+
+# Delete plan
+def delete_plan(request, plan_id):
+    plan = get_object_or_404(Plan, id=plan_id)
+    plan.delete()
+    return redirect('all_plans')

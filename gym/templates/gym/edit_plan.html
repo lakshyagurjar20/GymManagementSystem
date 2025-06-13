@@ -1,0 +1,10 @@
+<h1>Edit Plan: {{ plan.name }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    Name: <input type="text" name="name" value="{{ plan.name }}"><br>
+    Price: <input type="text" name="price" value="{{ plan.price }}"><br>
+    Duration: <input type="text" name="duration" value="{{ plan.duration }}"><br>
+    Description: <textarea name="description">{{ plan.description }}</textarea><br>
+    <button type="submit">Update</button>
+</form>
+<a href="{% url 'all_plans' %}">Back to Plans</a>

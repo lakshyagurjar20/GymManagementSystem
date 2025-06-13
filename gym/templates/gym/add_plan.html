@@ -1,0 +1,10 @@
+<h1>Add Plan</h1>
+<form method="POST">
+    {% csrf_token %}
+    Name: <input type="text" name="name"><br>
+    Price: <input type="text" name="price"><br>
+    Duration: <input type="text" name="duration"><br>
+    Description: <textarea name="description"></textarea><br>
+    <button type="submit">Add</button>
+</form>
+<a href="{% url 'all_plans' %}">Back to Plans</a>

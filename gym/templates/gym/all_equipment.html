@@ -1,0 +1,33 @@
+{% extends 'gym/base.html' %}
+
+{% block content %}
+<h2>All Equipment</h2>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Equipment Name</th>
+            <th>Purchase Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for equipment in equipments %}
+        <tr>
+            <td>{{ equipment.id }}</td>
+            <td>{{ equipment.name }}</td>
+            <td>{{ equipment.purchase_date }}</td>
+            <td>
+                <a href="{% url 'edit_equipment' equipment.id %}">Edit</a> |
+                <a href="{% url 'delete_equipment' equipment.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No equipment added yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
