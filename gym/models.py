@@ -29,3 +29,11 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.member.name} - ₹{self.amount} on {self.payment_date}"
+class Trainer(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    hire_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

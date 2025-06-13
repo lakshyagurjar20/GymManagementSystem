@@ -12,6 +12,11 @@
         <td>₹{{ payment.amount }}</td>
         <td>{{ payment.payment_date }}</td>
         <td>{{ payment.note }}</td>
+        <td>
+            <a href="{% url 'edit_payment' payment.id %}">Edit</a> |
+            <a href="{% url 'delete_payment' payment.id %}">Delete</a>
+          </td>
+          
     </tr>
     {% endfor %}
 </table>

@@ -18,5 +18,11 @@ urlpatterns = [
     path('member/<int:member_id>/delete/', delete_member_view, name='delete_member'),
     path('add-payment/', views.add_payment, name='add_payment'),
     path('all-payments/', views.all_payments, name='all_payments'),
+    path('edit-payment/<int:payment_id>/', views.edit_payment, name='edit_payment'),
+    path('delete-payment/<int:payment_id>/', views.delete_payment, name='delete_payment'),
+    path('all-trainers/', views.all_trainers, name='all_trainers'),
+    path('add-trainer/', views.add_trainer, name='add_trainer'),
+    path('edit-trainer/<int:trainer_id>/', views.edit_trainer, name='edit_trainer'),
+    path('delete-trainer/<int:trainer_id>/', views.delete_trainer, name='delete_trainer'),
 
 ]

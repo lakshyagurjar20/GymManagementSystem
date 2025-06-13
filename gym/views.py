@@ -11,7 +11,8 @@ from .forms import MemberForm
 
 from .forms import PaymentForm
 from .models import Payment
-
+from .models import Trainer
+from .forms import TrainerForm
 def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -133,3 +134,52 @@ def delete_member_view(request, member_id):
         messages.success(request, 'Member deleted successfully!')
         return redirect('all_members')
     return render(request, 'gym/delete_member.html', {'member': member})
+def edit_payment(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            form.save()
+            return redirect('all_payments')
+    else:
+        form = PaymentForm(instance=payment)
+    return render(request, 'gym/add_payment.html', {'form': form, 'edit': True})
+
+# Delete Payment
+def delete_payment(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    if request.method == 'POST':
+        payment.delete()
+        return redirect('all_payments')
+    return render(request, 'gym/delete_payment.html', {'payment': payment})
+def all_trainers(request):
+    trainers = Trainer.objects.all()
+    return render(request, 'gym/all_trainers.html', {'trainers': trainers})
+
+def add_trainer(request):
+    if request.method == 'POST':
+        form = TrainerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('all_trainers')
+    else:
+        form = TrainerForm()
+    return render(request, 'gym/add_trainer.html', {'form': form})
+
+def edit_trainer(request, trainer_id):
+    trainer = get_object_or_404(Trainer, id=trainer_id)
+    if request.method == 'POST':
+        form = TrainerForm(request.POST, instance=trainer)
+        if form.is_valid():
+            form.save()
+            return redirect('all_trainers')
+    else:
+        form = TrainerForm(instance=trainer)
+    return render(request, 'gym/edit_trainer.html', {'form': form, 'trainer': trainer})
+
+def delete_trainer(request, trainer_id):
+    trainer = get_object_or_404(Trainer, id=trainer_id)
+    if request.method == 'POST':
+        trainer.delete()
+        return redirect('all_trainers')
+    return render(request, 'gym/delete_trainer.html', {'trainer': trainer})
