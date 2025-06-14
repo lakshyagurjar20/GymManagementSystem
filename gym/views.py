@@ -16,6 +16,8 @@ from .forms import TrainerForm
 from .models import Equipment
 from .forms import EquipmentForm
 from .models import Plan
+from django.db import models
+
 def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -255,3 +257,20 @@ def delete_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
     plan.delete()
     return redirect('all_plans')
+
+@login_required
+def dashboard_view(request):
+    members_count = Member.objects.count()
+    trainers_count = Trainer.objects.count()
+    plans_count = Plan.objects.count()
+    equipment_count = Equipment.objects.count()
+    total_payment = Payment.objects.aggregate(models.Sum('amount'))['amount__sum'] or 0
+
+    context = {
+        'members_count': members_count,
+        'trainers_count': trainers_count,
+        'plans_count': plans_count,
+        'equipment_count': equipment_count,
+        'total_payment': total_payment
+    }
+    return render(request, 'gym/dashboard.html', context)
