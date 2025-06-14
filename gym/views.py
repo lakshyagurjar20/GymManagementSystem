@@ -21,6 +21,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+@login_required
 def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -30,7 +31,7 @@ def add_payment(request):
     else:
         form = PaymentForm()
     return render(request, 'gym/add_payment.html', {'form': form})
-
+@login_required
 def all_payments(request):
     payments = Payment.objects.all().order_by('-payment_date')
     return render(request, 'gym/all_payments.html', {'payments': payments})
@@ -40,7 +41,9 @@ def dashboard_view(request):
     return render(request, 'gym/dashboard.html')
 
 def login_view(request):
-    if request.method == 'POST':
+     if request.user.is_authenticated:
+        return redirect('gym/dashboard')
+     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
@@ -52,9 +55,11 @@ def login_view(request):
         else:
             messages.error(request, "Invalid username or password.")
 
-    return render(request, 'gym/login.html')
+     return render(request, 'gym/login.html')
 
 def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('gym/dashboard')
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']

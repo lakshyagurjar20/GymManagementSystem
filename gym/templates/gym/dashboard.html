@@ -1,11 +1,55 @@
-{% extends 'gym/base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<h2>Dashboard</h2>
-<div>
-    <p><strong>Total Members:</strong> {{ members_count }}</p>
-    <p><strong>Total Trainers:</strong> {{ trainers_count }}</p>
-    <p><strong>Total Plans:</strong> {{ plans_count }}</p>
-    <p><strong>Total Equipment:</strong> {{ equipment_count }}</p>
-    <p><strong>Total Payment Collected:</strong> ₹{{ total_payment }}</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Dashboard Overview</h2>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Total Members</h5>
+                    <h3>{{ members_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Total Trainers</h5>
+                    <h3>{{ trainers_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Total Equipment</h5>
+                    <h3>{{ equipment_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Total Plans</h5>
+                    <h3>{{ plans_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Total Payment Collected</h5>
+                    <h3>₹{{ total_payment }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
