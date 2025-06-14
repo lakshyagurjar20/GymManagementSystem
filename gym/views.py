@@ -21,6 +21,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from .forms import MemberForm
 @login_required
 def add_payment(request):
     if request.method == 'POST':
@@ -88,29 +89,14 @@ def logout_view(request):
 @login_required
 def add_member_view(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        age = request.POST.get('age')
-        gender = request.POST.get('gender')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        membership_type = request.POST.get('membership_type')
-
-        # Save to database
-        Member.objects.create(
-            name=name,
-            age=age,
-            gender=gender,
-            phone=phone,
-            email=email,
-            address=address,
-            membership_type=membership_type
-        )
-
-        messages.success(request, 'Member added successfully!')
-        return redirect('add_member')
-
-    return render(request, 'gym/add_member.html')
+        form = MemberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Member added successfully!')
+            return redirect('add_member')
+    else:
+        form = MemberForm()
+    return render(request, 'gym/add_member.html', {'form': form})
 @login_required
 def view_members(request):
     members = Member.objects.all()
@@ -125,22 +111,20 @@ def member_detail_view(request, member_id):
     return render(request, 'gym/member_detail.html', {'member': member})
 
 @login_required
+@login_required
 def edit_member_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
+
     if request.method == 'POST':
-        member.name = request.POST.get('name')
-        member.age = request.POST.get('age')
-        member.gender = request.POST.get('gender')
-        member.phone = request.POST.get('phone')
-        member.email = request.POST.get('email')
-        member.address = request.POST.get('address')
-        member.membership_type = request.POST.get('membership_type')
-        member.save()
+        form = MemberForm(request.POST, instance=member)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Member updated successfully!')
+            return redirect('view_member', member_id=member.id)
+    else:
+        form = MemberForm(instance=member)
 
-        messages.success(request, 'Member updated successfully!')
-        return redirect('all_members')
-
-    return render(request, 'gym/edit_member.html', {'member': member})
+    return render(request, 'gym/edit_member.html', {'form': form, 'member': member})
 
 @login_required
 def delete_member_view(request, member_id):
