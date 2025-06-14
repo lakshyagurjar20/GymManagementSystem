@@ -78,8 +78,9 @@ def signup_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, "Logged out successfully.")
     return redirect('login')
-
+@login_required
 def add_member_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -105,18 +106,20 @@ def add_member_view(request):
         return redirect('add_member')
 
     return render(request, 'gym/add_member.html')
+@login_required
 def view_members(request):
     members = Member.objects.all()
     return render(request, 'gym/view_members.html', {'members': members})
-
+@login_required
 def all_members_view(request):
     members = Member.objects.all()
     return render(request, 'gym/all_members.html', {'members': members})
+@login_required
 def member_detail_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
     return render(request, 'gym/member_detail.html', {'member': member})
 
-
+@login_required
 def edit_member_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
     if request.method == 'POST':
@@ -134,7 +137,7 @@ def edit_member_view(request, member_id):
 
     return render(request, 'gym/edit_member.html', {'member': member})
 
-
+@login_required
 def delete_member_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
     if request.method == 'POST':
@@ -142,6 +145,7 @@ def delete_member_view(request, member_id):
         messages.success(request, 'Member deleted successfully!')
         return redirect('all_members')
     return render(request, 'gym/delete_member.html', {'member': member})
+@login_required
 def edit_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     if request.method == 'POST':
@@ -154,16 +158,18 @@ def edit_payment(request, payment_id):
     return render(request, 'gym/add_payment.html', {'form': form, 'edit': True})
 
 # Delete Payment
+@login_required
 def delete_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     if request.method == 'POST':
         payment.delete()
         return redirect('all_payments')
     return render(request, 'gym/delete_payment.html', {'payment': payment})
+@login_required
 def all_trainers(request):
     trainers = Trainer.objects.all()
     return render(request, 'gym/all_trainers.html', {'trainers': trainers})
-
+@login_required
 def add_trainer(request):
     if request.method == 'POST':
         form = TrainerForm(request.POST)
@@ -173,7 +179,7 @@ def add_trainer(request):
     else:
         form = TrainerForm()
     return render(request, 'gym/add_trainer.html', {'form': form})
-
+@login_required
 def edit_trainer(request, trainer_id):
     trainer = get_object_or_404(Trainer, id=trainer_id)
     if request.method == 'POST':
@@ -184,7 +190,7 @@ def edit_trainer(request, trainer_id):
     else:
         form = TrainerForm(instance=trainer)
     return render(request, 'gym/edit_trainer.html', {'form': form, 'trainer': trainer})
-
+@login_required
 def delete_trainer(request, trainer_id):
     trainer = get_object_or_404(Trainer, id=trainer_id)
     if request.method == 'POST':
@@ -194,11 +200,13 @@ def delete_trainer(request, trainer_id):
 
 
 # List all equipment
+@login_required
 def all_equipment(request):
     equipments = Equipment.objects.all()
     return render(request, 'gym/all_equipment.html', {'equipments': equipments})
 
 # Add new equipment
+@login_required
 def add_equipment(request):
     if request.method == 'POST':
         form = EquipmentForm(request.POST)
@@ -210,6 +218,7 @@ def add_equipment(request):
     return render(request, 'gym/add_equipment.html', {'form': form})
 
 # Edit equipment
+@login_required
 def edit_equipment(request, eid):
     equipment = Equipment.objects.get(id=eid)
     if request.method == 'POST':
@@ -222,17 +231,20 @@ def edit_equipment(request, eid):
     return render(request, 'gym/edit_equipment.html', {'form': form})
 
 # Delete equipment
+@login_required
 def delete_equipment(request, eid):
     equipment = Equipment.objects.get(id=eid)
     if request.method == 'POST':
         equipment.delete()
         return redirect('all_equipment')
     return render(request, 'gym/delete_equipment.html', {'equipment': equipment})
+@login_required
 def all_plans(request):
     plans = Plan.objects.all()
     return render(request, 'gym/all_plans.html', {'plans': plans})
 
 # Add new plan
+@login_required
 def add_plan(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -244,6 +256,7 @@ def add_plan(request):
     return render(request, 'gym/add_plan.html')
 
 # Edit plan
+@login_required
 def edit_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
     if request.method == 'POST':
@@ -256,6 +269,7 @@ def edit_plan(request, plan_id):
     return render(request, 'gym/edit_plan.html', {'plan': plan})
 
 # Delete plan
+@login_required
 def delete_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
     plan.delete()
