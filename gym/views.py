@@ -17,7 +17,10 @@ from .models import Equipment
 from .forms import EquipmentForm
 from .models import Plan
 from django.db import models
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib import messages
+from .forms import CustomUserCreationForm
 def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -274,3 +277,15 @@ def dashboard_view(request):
         'total_payment': total_payment
     }
     return render(request, 'gym/dashboard.html', context)
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')  # We'll define login view soon
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})

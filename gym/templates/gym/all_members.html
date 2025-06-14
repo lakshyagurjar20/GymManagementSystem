@@ -12,21 +12,27 @@
             <th>Phone</th>
             <th>Membership Type</th>
             <th>Join Date</th>
+            <th>Actions</th>
         </tr>
         {% for member in members %}
 <tr>
     <td>{{ member.name }}</td>
+
     <td>{{ member.email }}</td>
     <td>{{ member.phone }}</td>
     <td>{{ member.membership_type }}</td>
     <td>{{ member.join_date }}</td>
     <td>
+
         <a href="{% url 'member_detail' member.id %}">View</a> |
         <a href="{% url 'edit_member' member.id %}">Edit</a> |
         <a href="{% url 'delete_member' member.id %}">Delete</a>
     </td>
+    
+
 </tr>
 {% endfor %}
+<td>{{ member.name }}</td>
 
     </table>
 </body>

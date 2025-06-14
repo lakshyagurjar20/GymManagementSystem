@@ -3,6 +3,8 @@ from .models import Member
 from .models import Payment
 from .models import Trainer
 from .models import Equipment
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
@@ -30,3 +32,9 @@ class EquipmentForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
