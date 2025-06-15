@@ -1,10 +1,9 @@
-<h1>Edit Plan: {{ plan.name }}</h1>
+<h1>Edit Plan: {{ plan.title }}</h1>
 <form method="POST">
     {% csrf_token %}
-    Name: <input type="text" name="name" value="{{ plan.name }}"><br>
+    Title: <input type="text" name="title" value="{{ plan.title }}"><br>
     Price: <input type="text" name="price" value="{{ plan.price }}"><br>
-    Duration: <input type="text" name="duration" value="{{ plan.duration }}"><br>
-    Description: <textarea name="description">{{ plan.description }}</textarea><br>
+    Duration (months): <input type="text" name="duration" value="{{ plan.duration }}"><br>
     <button type="submit">Update</button>
 </form>
 <a href="{% url 'all_plans' %}">Back to Plans</a>

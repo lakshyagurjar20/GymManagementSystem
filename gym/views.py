@@ -101,10 +101,18 @@ def add_member_view(request):
 def view_members(request):
     members = Member.objects.all()
     return render(request, 'gym/view_members.html', {'members': members})
+
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def all_members_view(request):
-    members = Member.objects.all()
+    query = request.GET.get('q')
+    if query:
+        members = Member.objects.filter(name__icontains=query)
+    else:
+        members = Member.objects.all()
     return render(request, 'gym/all_members.html', {'members': members})
+
 @login_required
 def member_detail_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
@@ -236,11 +244,10 @@ def all_plans(request):
 @login_required
 def add_plan(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        title = request.POST.get('title')
         price = request.POST.get('price')
         duration = request.POST.get('duration')
-        description = request.POST.get('description')
-        Plan.objects.create(name=name, price=price, duration=duration, description=description)
+        Plan.objects.create(title=title, price=price, duration=duration)
         return redirect('all_plans')
     return render(request, 'gym/add_plan.html')
 
@@ -249,10 +256,9 @@ def add_plan(request):
 def edit_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
     if request.method == 'POST':
-        plan.name = request.POST.get('name')
+        plan.title = request.POST.get('title')
         plan.price = request.POST.get('price')
         plan.duration = request.POST.get('duration')
-        plan.description = request.POST.get('description')
         plan.save()
         return redirect('all_plans')
     return render(request, 'gym/edit_plan.html', {'plan': plan})
@@ -261,25 +267,27 @@ def edit_plan(request, plan_id):
 @login_required
 def delete_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
+
+    # Detach plan from all members before deletion
+    Member.objects.filter(plan=plan).update(plan=None)
+
     plan.delete()
     return redirect('all_plans')
 
+
 @login_required
 def dashboard_view(request):
-    members_count = Member.objects.count()
-    trainers_count = Trainer.objects.count()
-    plans_count = Plan.objects.count()
-    equipment_count = Equipment.objects.count()
-    total_payment = Payment.objects.aggregate(models.Sum('amount'))['amount__sum'] or 0
+    total_members = Member.objects.count()
+    total_trainers = Trainer.objects.count()
+    total_payments = Payment.objects.count()
 
     context = {
-        'members_count': members_count,
-        'trainers_count': trainers_count,
-        'plans_count': plans_count,
-        'equipment_count': equipment_count,
-        'total_payment': total_payment
+        'total_members': total_members,
+        'total_trainers': total_trainers,
+        'total_payments': total_payments,
     }
     return render(request, 'gym/dashboard.html', context)
+
 
 def register(request):
     if request.method == 'POST':
