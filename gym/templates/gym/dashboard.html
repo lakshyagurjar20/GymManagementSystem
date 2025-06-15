@@ -3,6 +3,7 @@
 {% block content %}
 <h1 class="mb-4">Welcome to Gym Dashboard</h1>
 
+<!-- First Row: Summary Cards -->
 <div class="row">
     <div class="col-md-4">
         <div class="card text-white bg-success mb-3">
@@ -28,6 +29,37 @@
             <div class="card-body">
                 <h5 class="card-title">{{ total_payments }}</h5>
                 <a href="{% url 'all_payments' %}" class="btn btn-light btn-sm mt-2">View Payments</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Row: Action Buttons -->
+<div class="card mt-4">
+    <div class="card-header bg-dark text-white">
+        Quick Actions
+    </div>
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_member' %}" class="btn btn-outline-primary btn-block">
+                    ➕ Add Member
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'all_equipments' %}" class="btn btn-outline-success btn-block">
+                    🏋️ View Equipments
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_trainer' %}" class="btn btn-outline-info btn-block">
+                    👨‍🏫 Add Trainer
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'add_payment' %}" class="btn btn-outline-warning btn-block">
+                    💰 Add Payment
+                </a>
             </div>
         </div>
     </div>
