@@ -1,8 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load form_filters %} {# Load custom filter for add_class #}
+
 {% block content %}
-<h2>Add Equipment</h2>
-<form method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Save</button>
-</form>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h4><i class="bi bi-plus-circle-fill"></i> Add New Equipment</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_name" class="form-label">Name</label>
+                        {{ form.name|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_quantity" class="form-label">Quantity</label>
+                        {{ form.quantity|add_class:"form-control" }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_price" class="form-label">Price</label>
+                        {{ form.price|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_purchase_date" class="form-label">Purchase Date</label>
+                        {{ form.purchase_date|add_class:"form-control" }}
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">
+                        💾 Save Equipment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
