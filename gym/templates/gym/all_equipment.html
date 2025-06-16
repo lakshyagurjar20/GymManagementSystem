@@ -1,33 +1,46 @@
 {% extends 'gym/base.html' %}
 
 {% block content %}
-<h2>All Equipment</h2>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-body">All Equipment</h2>
+        <a href="{% url 'add_equipment' %}" class="btn btn-primary">+ Add Equipment</a>
+    </div>
 
-<table border="1" cellpadding="10" cellspacing="0">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Equipment Name</th>
-            <th>Purchase Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for equipment in equipments %}
-        <tr>
-            <td>{{ equipment.id }}</td>
-            <td>{{ equipment.name }}</td>
-            <td>{{ equipment.purchase_date }}</td>
-            <td>
-                <a href="{% url 'edit_equipment' equipment.id %}">Edit</a> |
-                <a href="{% url 'delete_equipment' equipment.id %}" onclick="return confirm('Are you sure?')">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">No equipment added yet.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="card shadow-sm bg-body-secondary text-body">
+        <div class="card-body p-0">
+            <table class="table table-bordered table-hover table-responsive align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#ID</th>
+                        <th scope="col">Equipment Name</th>
+                        <th scope="col">Purchase Date</th>
+                        <th scope="col">Price (₹)</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipment in equipments %}
+                    <tr>
+                        <td>{{ equipment.id }}</td>
+                        <td>{{ equipment.name }}</td>
+                        <td>{{ equipment.purchase_date }}</td>
+                        <td>{{ equipment.price }}</td>
+                        <td>{{ equipment.quantity }}</td>
+                        <td>
+                            <a href="{% url 'edit_equipment' equipment.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_equipment' equipment.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No equipment added yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

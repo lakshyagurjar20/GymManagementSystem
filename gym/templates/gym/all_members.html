@@ -1,44 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Members</title>
-</head>
-<body>
-    <h1>List of All Members</h1>
-    <form method="get" class="mb-3 d-flex">
-        <input type="text" name="q" class="form-control me-2" placeholder="Search by name..." value="{{ request.GET.q }}">
+{% extends 'gym/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-body">All Members</h2>
+        <a href="{% url 'add_member' %}" class="btn btn-success">+ Add Member</a>
+    </div>
+
+    <form method="get" class="input-group mb-4">
+        <input type="text" name="q" class="form-control" placeholder="Search by name..." value="{{ request.GET.q }}">
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    
-    <table border="1" cellpadding="8">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Membership Type</th>
-            <th>Join Date</th>
-            <th>Actions</th>
-        </tr>
-        {% for member in members %}
-<tr>
-    <td>{{ member.name }}</td>
 
-    <td>{{ member.email }}</td>
-    <td>{{ member.phone }}</td>
-    <td>{{ member.membership_type }}</td>
-    <td>{{ member.join_date }}</td>
-    <td>
+    <div class="card shadow-sm bg-body-secondary text-body">
+        <div class="card-body p-0">
+            <table class="table table-bordered table-hover table-responsive align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Plan</th>
+                        <th>Join Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{ member.name }}</td>
+                        <td>{{ member.email }}</td>
+                        <td>{{ member.phone }}</td>
+                        <td>
+                            {% if member.plan %}
+                                {{ member.plan.title }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        
 
-        <a href="{% url 'member_detail' member.id %}">View</a> |
-        <a href="{% url 'edit_member' member.id %}">Edit</a> |
-        <a href="{% url 'delete_member' member.id %}">Delete</a>
-    </td>
-    
-
-</tr>
-{% endfor %}
-<td>{{ member.name }}</td>
-
-    </table>
-</body>
-</html>
+                        <td>{{ member.join_date }}</td>
+                        <td>
+                            <a href="{% url 'member_detail' member.id %}" class="btn btn-sm btn-info">View</a>
+                            <a href="{% url 'edit_member' member.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_member' member.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No members found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

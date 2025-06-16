@@ -45,7 +45,7 @@ class Member(models.Model):
     email = models.EmailField()
     address = models.TextField()
     join_date = models.DateField(auto_now_add=True)
-    membership_type = models.CharField(max_length=50)
+    
 
     plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
 

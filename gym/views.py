@@ -86,6 +86,13 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Logged out successfully.")
     return redirect('login')
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .forms import MemberForm
+from .models import Member
+
+# Add Member View
 @login_required
 def add_member_view(request):
     if request.method == 'POST':
@@ -97,28 +104,30 @@ def add_member_view(request):
     else:
         form = MemberForm()
     return render(request, 'gym/add_member.html', {'form': form})
+
+# View All Members (basic)
 @login_required
 def view_members(request):
-    members = Member.objects.all()
+    members = Member.objects.select_related('plan').all()
     return render(request, 'gym/view_members.html', {'members': members})
 
-from django.contrib.auth.decorators import login_required
-
+# Search + View All Members
 @login_required
 def all_members_view(request):
     query = request.GET.get('q')
     if query:
-        members = Member.objects.filter(name__icontains=query)
+        members = Member.objects.select_related('plan').filter(name__icontains=query)
     else:
-        members = Member.objects.all()
+        members = Member.objects.select_related('plan').all()
     return render(request, 'gym/all_members.html', {'members': members})
 
+# View Member Detail
 @login_required
 def member_detail_view(request, member_id):
-    member = get_object_or_404(Member, id=member_id)
+    member = get_object_or_404(Member.objects.select_related('plan'), id=member_id)
     return render(request, 'gym/member_detail.html', {'member': member})
 
-@login_required
+# Edit Member View
 @login_required
 def edit_member_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
@@ -128,12 +137,13 @@ def edit_member_view(request, member_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Member updated successfully!')
-            return redirect('view_member', member_id=member.id)
+            return redirect('member_detail', member_id=member.id)
     else:
         form = MemberForm(instance=member)
 
     return render(request, 'gym/edit_member.html', {'form': form, 'member': member})
 
+# Delete Member View
 @login_required
 def delete_member_view(request, member_id):
     member = get_object_or_404(Member, id=member_id)
@@ -142,6 +152,7 @@ def delete_member_view(request, member_id):
         messages.success(request, 'Member deleted successfully!')
         return redirect('all_members')
     return render(request, 'gym/delete_member.html', {'member': member})
+
 @login_required
 def edit_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)

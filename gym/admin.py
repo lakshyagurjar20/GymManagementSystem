@@ -13,7 +13,7 @@ from .models import Member, Equipment, Plan
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'membership_type', 'join_date')
+    list_display = ('name', 'email', 'phone',  'join_date')
     search_fields = ('name', 'email', 'phone')
 
 @admin.register(Equipment)

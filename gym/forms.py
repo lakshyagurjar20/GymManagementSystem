@@ -20,7 +20,7 @@ class MemberForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'membership_type': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'membership_type': ❌ Remove this field
             'plan': forms.Select(attrs={'class': 'form-control'}),
         }
 
