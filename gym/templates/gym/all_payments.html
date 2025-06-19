@@ -1,23 +1,45 @@
-<h2>All Payments</h2>
-<table border="1">
-    <tr>
-        <th>Member</th>
-        <th>Amount</th>
-        <th>Date</th>
-        <th>Note</th>
-    </tr>
-    {% for payment in payments %}
-    <tr>
-        <td>{{ payment.member.name }}</td>
-        <td>₹{{ payment.amount }}</td>
-        <td>{{ payment.payment_date }}</td>
-        <td>{{ payment.note }}</td>
-        <td>
-            <a href="{% url 'edit_payment' payment.id %}">Edit</a> |
-            <a href="{% url 'delete_payment' payment.id %}">Delete</a>
-          </td>
-          
-    </tr>
-    {% endfor %}
-</table>
-<a href="{% url 'add_payment' %}">Add Payment</a>
+{% extends 'gym/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-body">💰 All Payments</h2>
+        <a href="{% url 'add_payment' %}" class="btn btn-success">➕ Add Payment</a>
+    </div>
+
+    <div class="card shadow-sm bg-body-secondary text-body">
+        <div class="card-body p-0">
+            <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Member</th>
+                        <th>Amount (₹)</th>
+                        <th>Date</th>
+                        <th>Note</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.member.name }}</td>
+                        <td>₹{{ payment.amount }}</td>
+                        <td>{{ payment.payment_date }}</td>
+                        <td>{{ payment.note|default:"—" }}</td>
+                        <td>
+                            <a href="{% url 'edit_payment' payment.id %}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                            <a href="{% url 'delete_payment' payment.id %}" class="btn btn-sm btn-danger">🗑️ Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No payments recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,22 @@
 {% extends 'gym/base.html' %}
+
 {% block content %}
-  <h2>Delete Payment</h2>
-  <p>Are you sure you want to delete this payment?</p>
-  <form method="POST">
-    {% csrf_token %}
-    <button type="submit">Yes, Delete</button>
-    <a href="{% url 'all_payments' %}">Cancel</a>
-  </form>
+<div class="container py-5">
+    <div class="card shadow-sm bg-body-secondary text-body">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">🗑️ Confirm Delete Payment</h4>
+            <a href="{% url 'all_payments' %}" class="btn btn-sm btn-light">← Back</a>
+        </div>
+
+        <div class="card-body">
+            <p class="fs-5">Are you sure you want to delete this payment?</p>
+
+            <form method="POST" class="d-flex gap-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{% url 'all_payments' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
