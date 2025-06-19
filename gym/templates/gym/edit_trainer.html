@@ -1,9 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'gym/base.html' %}
+{% load static %}
+
 {% block content %}
-<h2>Edit Trainer - {{ trainer.name }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
+<div class="container py-5">
+    <div class="card shadow-sm bg-body-secondary text-body">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">✏️ Edit Trainer - {{ trainer.name }}</h4>
+            <a href="{% url 'all_trainers' %}" class="btn btn-sm btn-light">← Back</a>
+        </div>
+        <div class="card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-warning mt-3">Update Trainer</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -15,9 +15,15 @@ class Trainer(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     hire_date = models.DateField(auto_now_add=True)
+    experience = models.PositiveIntegerField(default=0, help_text="Experience in years")
+
+    specialty = models.CharField(max_length=100, default='General')
+    salary = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+
 
     def __str__(self):
         return self.name
+
 class Equipment(models.Model):
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()

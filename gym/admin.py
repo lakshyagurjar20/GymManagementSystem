@@ -9,7 +9,7 @@
 # admin.site.register(Equipment)
 # admin.site.register(Plan)
 from django.contrib import admin
-from .models import Member, Equipment, Plan
+from .models import Member, Equipment, Plan ,Trainer
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
@@ -25,3 +25,8 @@ class EquipmentAdmin(admin.ModelAdmin):
 class PlanAdmin(admin.ModelAdmin):
     list_display = ('title', 'price', 'duration')
     search_fields = ('title',)
+
+@admin.register(Trainer)
+class TrainerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'experience', 'specialty', 'salary', 'hire_date')
+
